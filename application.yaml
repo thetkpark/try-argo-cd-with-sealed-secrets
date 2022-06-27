@@ -1,0 +1,24 @@
+# declarative setup of Argo CD
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: default-application
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/thetkpark/try-argo-cd-with-sealed-secrets.git
+    targetRevision: HEAD
+    path: k8s # which path in repo to use
+  destination:
+    server: https://kubernetes.default.svc # Endpoint of K8s API Server (Use internal DNS because Argo CD is running in the cluster)
+    namespace: default # which namespace Argo CD should manage
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
+    automated:
+      selfHeal: true # enable automatic sync when the live cluster's state deviates from the state defined in Git
+      prune: true # prune any changes that differ from git repo
