@@ -11,6 +11,8 @@ spec:
     repoURL: https://github.com/thetkpark/try-argo-cd-with-sealed-secrets.git
     targetRevision: HEAD
     path: k8s # which path in repo to use
+    directory:
+      recurse: true # do the recusive search for manifest in that path
   destination:
     server: https://kubernetes.default.svc # Endpoint of K8s API Server (Use internal DNS because Argo CD is running in the cluster)
     namespace: default # which namespace Argo CD should manage
